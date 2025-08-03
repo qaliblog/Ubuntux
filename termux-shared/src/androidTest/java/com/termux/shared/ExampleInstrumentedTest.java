@@ -1,4 +1,4 @@
-package com.termux.shared;
+package com.qali.ubuntux.shared;
 
 import android.content.Context;
 

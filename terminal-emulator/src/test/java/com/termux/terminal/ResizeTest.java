@@ -1,4 +1,4 @@
-package com.termux.terminal;
+package com.qali.ubuntux.terminal;
 
 public class ResizeTest extends TerminalTestCase {
 
