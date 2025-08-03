@@ -1,4 +1,4 @@
-package com.termux.terminal;
+package com.qali.ubuntux.terminal;
 
 import android.view.KeyEvent;
 

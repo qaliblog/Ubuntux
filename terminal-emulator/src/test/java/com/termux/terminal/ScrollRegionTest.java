@@ -1,4 +1,4 @@
-package com.termux.terminal;
+package com.qali.ubuntux.terminal;
 
 /**
  * ${CSI}${top};${bottom}r" - set Scrolling Region [top;bottom] (default = full size of window) (DECSTBM).

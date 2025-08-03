@@ -8,8 +8,8 @@ ext {
     // crash at startup.
     // Bootstrap of a different variant must not be manually installed by the user after app installation
     // by replacing $PREFIX since app code is dependant on the variant used to build the APK.
-    // Currently supported values are: [ "apt-android-7" "apt-android-5" ]
-    packageVariant = System.getenv("TERMUX_PACKAGE_VARIANT") ?: "apt-android-7" // Default: "apt-android-7"
+    // Currently supported values are: [ "apt-android-7" "apt-android-5" "ubuntu-arm64" ]
+    packageVariant = System.getenv("TERMUX_PACKAGE_VARIANT") ?: "ubuntu-arm64" // Default: "ubuntu-arm64"
 }
 
 android {
@@ -38,7 +38,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.termux"
+        applicationId "com.qali.ubuntux"
         minSdkVersion project.properties.minSdkVersion.toInteger()
         targetSdkVersion project.properties.targetSdkVersion.toInteger()
         versionCode 118
@@ -49,14 +49,14 @@ android {
 
         buildConfigField "String", "TERMUX_PACKAGE_VARIANT", "\"" + project.ext.packageVariant + "\"" // Used by TermuxApplication class
 
-        manifestPlaceholders.TERMUX_PACKAGE_NAME = "com.termux"
-        manifestPlaceholders.TERMUX_APP_NAME = "Termux"
-        manifestPlaceholders.TERMUX_API_APP_NAME = "Termux:API"
-        manifestPlaceholders.TERMUX_BOOT_APP_NAME = "Termux:Boot"
-        manifestPlaceholders.TERMUX_FLOAT_APP_NAME = "Termux:Float"
-        manifestPlaceholders.TERMUX_STYLING_APP_NAME = "Termux:Styling"
-        manifestPlaceholders.TERMUX_TASKER_APP_NAME = "Termux:Tasker"
-        manifestPlaceholders.TERMUX_WIDGET_APP_NAME = "Termux:Widget"
+        manifestPlaceholders.TERMUX_PACKAGE_NAME = "com.qali.ubuntux"
+        manifestPlaceholders.TERMUX_APP_NAME = "UbuntuX"
+        manifestPlaceholders.TERMUX_API_APP_NAME = "UbuntuX:API"
+        manifestPlaceholders.TERMUX_BOOT_APP_NAME = "UbuntuX:Boot"
+        manifestPlaceholders.TERMUX_FLOAT_APP_NAME = "UbuntuX:Float"
+        manifestPlaceholders.TERMUX_STYLING_APP_NAME = "UbuntuX:Styling"
+        manifestPlaceholders.TERMUX_TASKER_APP_NAME = "UbuntuX:Tasker"
+        manifestPlaceholders.TERMUX_WIDGET_APP_NAME = "UbuntuX:Widget"
 
         externalNativeBuild {
             ndkBuild {
@@ -225,6 +225,25 @@ task downloadBootstraps() {
             downloadBootstrap("arm", "26bfb45304c946170db69108e5eb6e3641aad751406ce106c80df80cad2eccf8", version)
             downloadBootstrap("i686", "46dcfeb5eef67ba765498db9fe4c50dc4690805139aa0dd141a9d8ee0693cd27", version)
             downloadBootstrap("x86_64", "615b590679ee6cd885b7fd2ff9473c845e920f9b422f790bb158c63fe42b8481", version)
+        } else if (packageVariant == "ubuntu-arm64") {
+            // Custom Ubuntu ARM64 rootfs configuration
+            // Use the Ubuntu base rootfs from assets instead of downloading bootstrap
+            def version = "ubuntu-22.04-base-arm64"
+            logger.quiet("Building with custom Ubuntu ARM64 rootfs from assets")
+            
+            // Copy Ubuntu rootfs from assets to the expected bootstrap location
+            def localUrl = "src/main/cpp/bootstrap-aarch64.zip"
+            def sourceFile = new File(projectDir, "src/main/assets/ubuntu-base-22.04-base-arm64.tar.gz")
+            def targetFile = new File(projectDir, localUrl)
+            
+            if (sourceFile.exists()) {
+                logger.quiet("Using Ubuntu rootfs from assets: " + sourceFile.name)
+                targetFile.parentFile.mkdirs()
+                // Copy the Ubuntu rootfs to the bootstrap location expected by native code
+                java.nio.file.Files.copy(sourceFile.toPath(), targetFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+            } else {
+                throw new GradleException("Ubuntu rootfs not found in assets: " + sourceFile.absolutePath)
+            }
         } else {
             throw new GradleException("Unsupported TERMUX_PACKAGE_VARIANT \"" + packageVariant + "\"")
         }
