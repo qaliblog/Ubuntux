@@ -227,15 +227,23 @@ task downloadBootstraps() {
             downloadBootstrap("x86_64", "615b590679ee6cd885b7fd2ff9473c845e920f9b422f790bb158c63fe42b8481", version)
         } else if (packageVariant == "ubuntu-arm64") {
             // Custom Ubuntu ARM64 rootfs configuration
-            // This is a placeholder for custom Ubuntu ARM64 rootfs
-            // To use a custom Ubuntu rootfs, you need to:
-            // 1. Create a custom Ubuntu ARM64 rootfs bootstrap package
-            // 2. Host it at a URL accessible during build
-            // 3. Update the URL, checksum, and version below
-            def version = "ubuntu-22.04-arm64-custom"
-            logger.quiet("Building with custom Ubuntu ARM64 rootfs support")
-            // For now, fallback to the standard aarch64 bootstrap while maintaining the ubuntu-arm64 variant
-            downloadBootstrap("aarch64", "4a51a7eb209fe82efc24d52e3cccc13165f27377290687cb82038cbd8e948430", "2022.04.28-r5+apt-android-7")
+            // Use the Ubuntu base rootfs from assets instead of downloading bootstrap
+            def version = "ubuntu-22.04-base-arm64"
+            logger.quiet("Building with custom Ubuntu ARM64 rootfs from assets")
+            
+            // Copy Ubuntu rootfs from assets to the expected bootstrap location
+            def localUrl = "src/main/cpp/bootstrap-aarch64.zip"
+            def sourceFile = new File(projectDir, "src/main/assets/ubuntu-base-22.04-base-arm64.tar.gz")
+            def targetFile = new File(projectDir, localUrl)
+            
+            if (sourceFile.exists()) {
+                logger.quiet("Using Ubuntu rootfs from assets: " + sourceFile.name)
+                targetFile.parentFile.mkdirs()
+                // Copy the Ubuntu rootfs to the bootstrap location expected by native code
+                java.nio.file.Files.copy(sourceFile.toPath(), targetFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+            } else {
+                throw new GradleException("Ubuntu rootfs not found in assets: " + sourceFile.absolutePath)
+            }
         } else {
             throw new GradleException("Unsupported TERMUX_PACKAGE_VARIANT \"" + packageVariant + "\"")
         }

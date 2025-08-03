@@ -13,7 +13,7 @@ import com.qali.ubuntux.shared.termux.extrakeys.SpecialButton;
 import com.qali.ubuntux.terminal.TerminalSession;
 import com.qali.ubuntux.view.TerminalView;
 
-import static com.termux.shared.termux.extrakeys.ExtraKeysConstants.PRIMARY_KEY_CODES_FOR_STRINGS;
+import static com.qali.ubuntux.shared.termux.extrakeys.ExtraKeysConstants.PRIMARY_KEY_CODES_FOR_STRINGS;
 
 
 public class TerminalExtraKeys implements ExtraKeysView.IExtraKeysView {

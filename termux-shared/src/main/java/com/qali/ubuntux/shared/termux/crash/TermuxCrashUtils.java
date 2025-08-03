@@ -129,7 +129,7 @@ public class TermuxCrashUtils implements CrashHandler.CrashHandlerClient {
     /**
      * Notify the user of an app crash by reading the crash info from the crash log file
      * at {@link TermuxConstants#TERMUX_CRASH_LOG_FILE_PATH}. The crash log file would have been
-     * created by {@link com.termux.shared.crash.CrashHandler}.
+     * created by {@link com.qali.ubuntux.shared.crash.CrashHandler}.
      *
      * If the crash log file exists and is not empty and
      * {@link TermuxPreferenceConstants.TERMUX_APP#KEY_CRASH_REPORT_NOTIFICATIONS_ENABLED} is

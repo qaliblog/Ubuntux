@@ -6,7 +6,7 @@ import com.qali.ubuntux.shared.android.AndroidUtils;
 import java.io.Serializable;
 
 /**
- * An object that stored info for {@link com.termux.shared.activities.ReportActivity}.
+ * An object that stored info for {@link com.qali.ubuntux.shared.activities.ReportActivity}.
  */
 public class ReportInfo implements Serializable {
 

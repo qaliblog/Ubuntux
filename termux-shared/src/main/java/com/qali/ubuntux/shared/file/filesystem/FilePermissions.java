@@ -25,7 +25,7 @@
 
 package com.qali.ubuntux.shared.file.filesystem;
 
-import static com.termux.shared.file.filesystem.FilePermission.*;
+import static com.qali.ubuntux.shared.file.filesystem.FilePermission.*;
 
 import java.util.*;
 
