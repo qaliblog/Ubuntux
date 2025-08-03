@@ -18,6 +18,9 @@ public interface TerminalViewClient {
     boolean readFnKey();
     boolean onCodePoint(int codePoint, boolean ctrlDown, TerminalSession session);
     void onEmulatorSet();
+    boolean shouldEnforceCharBasedInput();
+    boolean shouldBackButtonBeMappedToEscape();
+    boolean shouldUseCtrlSpaceWorkaround();
     void logError(String tag, String message);
     void logWarn(String tag, String message);
     void logInfo(String tag, String message);
