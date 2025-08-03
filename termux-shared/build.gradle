@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-// apply plugin: 'maven-publish'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion project.properties.compileSdkVersion.toInteger()
@@ -72,20 +72,20 @@ dependencies {
 
 task sourceJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
-    archiveClassifier = "sources"
+    classifier "sources"
 }
 
-// afterEvaluate {
-//     publishing {
-//         publications {
-//             // Creates a Maven publication called "release".
-//             release(MavenPublication) {
-//                 from components.release
-//                 groupId = 'com.termux'
-//                 artifactId = 'termux-shared'
-//                 version = '0.118.0'
-//                 artifact(sourceJar)
-//             }
-//         }
-//     }
-// }
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.termux'
+                artifactId = 'termux-shared'
+                version = '0.118.0'
+                artifact(sourceJar)
+            }
+        }
+    }
+}
