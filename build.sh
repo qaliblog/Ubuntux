@@ -15,7 +15,7 @@ export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 # Check if NDK is installed
 if [ ! -d "$ANDROID_HOME/ndk" ]; then
     echo "NDK not found. Installing NDK..."
-    yes | sdkmanager "ndk;21.4.7075529"
+    yes | sdkmanager "ndk;22.1.7171670"
 fi
 
 # Check if build tools are installed
