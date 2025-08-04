@@ -49,11 +49,23 @@ fi
 
 # Verify NDK
 echo "Verifying NDK..."
-if [ ! -d "$ANDROID_HOME/ndk/21.4.7075529" ]; then
-    echo "ERROR: NDK directory does not exist: $ANDROID_HOME/ndk/21.4.7075529"
+NDK_VERSION="25.2.9519653"
+if [ ! -d "$ANDROID_HOME/ndk/$NDK_VERSION" ]; then
+    echo "ERROR: NDK directory does not exist: $ANDROID_HOME/ndk/$NDK_VERSION"
     echo "Available NDK versions:"
     ls -la $ANDROID_HOME/ndk/ 2>/dev/null || echo "No NDK installations found"
-    exit 1
+    echo ""
+    echo "Trying to use available NDK version..."
+    # Try to find any available NDK version
+    AVAILABLE_NDK=$(ls -1 $ANDROID_HOME/ndk/ 2>/dev/null | head -1)
+    if [ -n "$AVAILABLE_NDK" ]; then
+        echo "Found available NDK version: $AVAILABLE_NDK"
+        echo "Please update gradle.properties to use: ndkVersion=$AVAILABLE_NDK"
+        exit 1
+    else
+        echo "No NDK versions found at all"
+        exit 1
+    fi
 fi
 
 echo "=== Final Environment Setup ==="
